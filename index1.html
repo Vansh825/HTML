@@ -1,0 +1,442 @@
+<style>
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: #000;
+    color: #fff;
+    min-height: 100vh;
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    backdrop-filter: blur(4px);
+    background-color: rgba(255, 255, 255, 0.05);
+    z-index: 0;
+  }
+
+  .hearts {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+    z-index: 1;
+  }
+
+  .heart {
+    position: absolute;
+    bottom: -100px;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    transform: rotate(-45deg);
+    animation: floatUp 10s linear infinite;
+    filter: blur(2px);
+  }
+
+  .heart::before,
+  .heart::after {
+    content: '';
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.3);
+    border-radius: 50%;
+  }
+
+  .heart::before {
+    top: -10px;
+    left: 0;
+  }
+
+  .heart::after {
+    top: 0;
+    left: 10px;
+  }
+
+  .heart:nth-child(1) { left: 10%; animation-duration: 12s; }
+  .heart:nth-child(2) { left: 25%; animation-duration: 9s; }
+  .heart:nth-child(3) { left: 50%; animation-duration: 11s; }
+  .heart:nth-child(4) { left: 75%; animation-duration: 13s; }
+  .heart:nth-child(5) { left: 90%; animation-duration: 10s; }
+
+  @keyframes floatUp {
+    0%   { transform: translateY(0) scale(1) rotate(-45deg); opacity: 0.5; }
+    50%  { opacity: 0.7; }
+    100% { transform: translateY(-120vh) scale(1.2) rotate(-45deg); opacity: 0; }
+  }
+
+  header {
+    background-color: #111;
+    color: #fff;
+    padding: 2rem 1rem;
+    text-align: center;
+    border-bottom: 2px solid #333;
+    position: relative;
+    z-index: 2;
+  }
+
+  main {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    min-height: calc(100vh - 160px);
+    text-align: center;
+    position: relative;
+    z-index: 2;
+  }
+
+  .active {
+    display: flex;
+  }
+
+  .page-content {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 2rem;
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1);
+    max-width: 500px;
+    width: 90%;
+    animation: fadeIn 1s ease-out;
+  }
+
+  .page-content p {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #ddd;
+  }
+
+  input[type="text"] {
+    padding: 0.6rem 1rem;
+    border-radius: 20px;
+    border: 1px solid #444;
+    background: #111;
+    color: #fff;
+    width: 100%;
+    max-width: 300px;
+    margin-bottom: 1.5rem;
+  }
+
+  .btn {
+    background-color: #fff;
+    color: #000;
+    padding: 0.6rem 1.5rem;
+    border: none;
+    border-radius: 30px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 0 0.5rem;
+    transition: 0.3s ease;
+    box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
+  }
+
+  .btn:hover {
+    background-color: #ccc;
+    transform: scale(1.05);
+  }
+
+  footer {
+    background-color: #111;
+    text-align: center;
+    padding: 1rem;
+    color: #888;
+    font-size: 0.9rem;
+    border-top: 1px solid #333;
+    z-index: 2;
+    position: relative;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes explode {
+    0%   { transform: scale(1) rotate(-45deg); opacity: 1; }
+    50%  { transform: scale(2) rotate(-45deg); opacity: 0.7; }
+    100% { transform: scale(0) rotate(-45deg); opacity: 0; }
+  }
+
+  .heart.explode {
+    animation: explode 0.6s forwards;
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: rotate(-45deg) scale(1); }
+    50% { transform: rotate(-45deg) scale(1.15); }
+  }
+
+  #movingHeart {
+    transition: left 0.5s ease, top 0.5s ease;
+  }
+
+  #page8 .page-content {
+    background: rgba(255, 255, 255, 0.07);
+    color: #fff;
+    text-shadow: 0 0 10px #fff;
+    animation: pulseGlow 2s infinite alternate;
+  }
+
+  @keyframes pulseGlow {
+    0% { transform: scale(1); opacity: 0.8; }
+    100% { transform: scale(1.05); opacity: 1; }
+  }
+</style>
+
+
+  <!-- Floating Heart Background -->
+  <div class="hearts">
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+    <div class="heart"></div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <h1>HAPPY 2ND MONTH Anniversary</h1>
+    <p>LIKE THIS I WANT TO SPEND MY WHOLE LIFE WITH YOU💖</p>
+  </header>
+
+  <!-- Page 1: Anniversary with options -->
+  <main id="page1" class="active">
+    <div class="page-content">
+      <p>1. When is our anniversary? 💍</p>
+      <div style="display: flex; flex-direction: column; gap: 10px; max-width: 300px; margin: 0 auto 1.5rem;">
+        <button class="btn" onclick="checkAnswer('April 17, 2025')">April 17, 2025</button>
+        <button class="btn" onclick="checkAnswer('April 5, 2025')">April 5, 2025</button>
+        <button class="btn" onclick="checkAnswer('April 22, 2025')">April 22, 2025</button>
+        <button class="btn" onclick="checkAnswer('April 30, 2025')">April 30, 2025</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Page 2: Movie -->
+  <main id="page2">
+    <div class="page-content">
+      <p>2. What's do you want us to do on our first date? 🎬</p>
+      <input type="text" placeholder="Type your answer..." />
+      <div>
+        <button class="btn" onclick="showPage('page1')">Back</button>
+        <button class="btn" onclick="showPage('page3')">Next 💘</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Page 3: Will you marry me? with Yes / No buttons -->
+  <main id="page3">
+    <div class="page-content">
+      <p>3. Will you marry me? 🌍</p>
+      <div style="display: flex; justify-content: center; gap: 20px; margin-top: 1rem;">
+        <button class="btn" onclick="showPage('page5')">Yes 💖</button>
+        <button class="btn" id="noBtn">No 😢</button>
+      </div>
+      <div style="margin-top: 20px;">
+        <button class="btn" onclick="showPage('page2')">Back</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- Page 5: Will you press the button? -->
+  <main id="page5">
+    <div class="page-content">
+      <p>Will you press the button?</p>
+      <button class="btn" onclick="showPage('page6')">YESSSSSSS</button>
+    </div>
+  </main>
+
+  <!-- Page 4: Thank You -->
+  <main id="page4">
+    <div class="page-content">
+      <p>You're the sweetest! 💕 Thanks for remembering all our lovely moments together.</p>
+      <button class="btn" onclick="showPage('page1')">Start Over 💞</button>
+    </div>
+  </main>
+
+  <!-- Page 6: Catch the Heart Game -->
+  <main id="page6">
+    <div class="page-content" style="position: relative; height: 320px;">
+      <h2 style="color: #d81e5b; font-weight: 700; text-shadow: 1px 1px 4px #ffb6c1;">Catch the Heart! 💖</h2>
+      <p style="font-size: 1.2rem; color: #a83261;">Click the heart as many times as you can in <span id="timer">10</span> seconds!</p>
+      <div id="gameBox" 
+           style="position: relative; width: 100%; height: 220px; background: linear-gradient(135deg, #ffe4ec 0%, #ffcee4 50%, #ffd1e3 100%); 
+                  border-radius: 16px; overflow: hidden; margin: 1rem 0; box-shadow: 0 0 15px #ff7bac inset;">
+        <div id="movingHeart" 
+             style="width: 50px; height: 50px; background: #ff476f; position: absolute; cursor: pointer; transform: rotate(-45deg);
+                    animation: pulse 1.5s infinite;">
+          <div style="position: absolute; width: 50px; height: 50px; background: #ff476f; border-radius: 50%; top: -25px; left: 0;"></div>
+          <div style="position: absolute; width: 50px; height: 50px; background: #ff476f; border-radius: 50%; top: 0; left: 25px;"></div>
+        </div>
+      </div>
+      <p>Score: <span id="score">0</span></p>
+      <div id="gameOverControls">
+        <button class="btn" onclick="startGame()">Play Again</button>
+        <button class="btn" onclick="showPage('page7')">Next 💌</button>
+      </div>
+      <button class="btn" onclick="showPage('page3')" style="margin-top: 10px;">Back</button>
+    </div>
+  </main>
+
+  <!-- Page 7: Love Letter -->
+  <main id="page7">
+    <div class="page-content" style="max-width: 600px;">
+      <h2 style="color: #d81e5b;">My Love Letter to You 💌</h2>
+      <p style="font-size: 1.2rem; color: #a83261; margin-bottom: 1.5rem;">
+        My pretty little babyyy,<br/><br/>
+          i love you so much, th day i met you i fell in love and idk it was a rush decision but it was my best desicion of my life the way i started smiling again with my heart it felt like i missed this in my 17 years of life and i wanted to thank you for being here with me and providing me so much happiness and joy in life and ill be better and work hard on my self for you my sleepyhead. i love you more than anything<br/><br/>
+        i will give my all to have a great future with you my love.<br/><br/>
+        With all my love,<br/>
+        💖 forever your mahipgluuuuu 💖
+      </p>
+      <button class="btn" onclick="showPage('page1')">Start Over 💞</button>
+    </div>
+  </main>
+
+  <!-- Page 8: Happy 2nd Month Anniversary with animation -->
+  <main id="page8">
+    <div class="page-content">
+      Happy 2nd Month Anniversary, Mahi! 💖🎉
+    </div>
+    <button class="btn" style="margin: 1rem auto; display: block;" onclick="showPage('page1')">Back to Start</button>
+  </main>
+
+  <footer>
+    <p>Made with ❤️ for you.</p>
+  </footer>
+
+  <script>
+    // Page navigation function
+    function showPage(pageId) {
+      const pages = document.querySelectorAll('main');
+      pages.forEach(page => {
+        if (page.id === pageId) {
+          page.classList.add('active');
+        } else {
+          page.classList.remove('active');
+        }
+      });
+
+      // Reset game if leaving game page
+      if (pageId !== 'page6') {
+        stopGame();
+      }
+
+      // Reset game controls visibility
+      if (pageId === 'page6') {
+        document.getElementById('gameOverControls').style.display = 'none';
+        startGame();
+      }
+    }
+
+    // Quiz logic example for page1 answer
+    function checkAnswer(answer) {
+      if (answer === 'April 17, 2025') {
+        alert('muwhhhhhhhhh 💖');
+        showPage('page2');
+      } else {
+        alert('nigga ill cryyyyyyyyyyy😅');
+      }
+    }
+
+    // Page3 No button move away logic
+    const noBtn = document.getElementById('noBtn');
+    noBtn.addEventListener('mouseenter', () => {
+      const page3 = document.getElementById('page3');
+      const btn = noBtn;
+      // Move randomly within container
+      const maxX = page3.clientWidth - btn.clientWidth - 20;
+      const maxY = page3.clientHeight - btn.clientHeight - 20;
+      const randomX = Math.floor(Math.random() * maxX);
+      const randomY = Math.floor(Math.random() * maxY);
+      btn.style.position = 'absolute';
+      btn.style.left = randomX + 'px';
+      btn.style.top = randomY + 'px';
+    });
+    noBtn.addEventListener('click', () => {
+      alert('Come on, don\'t be shy! 💖');
+    });
+
+    // Game variables
+    let gameInterval = null;
+    let timeLeft = 10;
+    let score = 0;
+
+    const movingHeart = document.getElementById('movingHeart');
+    const timerEl = document.getElementById('timer');
+    const scoreEl = document.getElementById('score');
+    const gameBox = document.getElementById('gameBox');
+    const gameOverControls = document.getElementById('gameOverControls');
+
+    function randomPosition() {
+      const boxRect = gameBox.getBoundingClientRect();
+      const heartSize = movingHeart.offsetWidth;
+      const x = Math.random() * (boxRect.width - heartSize);
+      const y = Math.random() * (boxRect.height - heartSize);
+      return { x, y };
+    }
+
+    function moveHeart() {
+      const pos = randomPosition();
+      movingHeart.style.left = pos.x + 'px';
+      movingHeart.style.top = pos.y + 'px';
+    }
+
+    function startGame() {
+      timeLeft = 10;
+      score = 0;
+      timerEl.textContent = timeLeft;
+      scoreEl.textContent = score;
+      gameOverControls.style.display = 'none';
+      moveHeart();
+
+      if (gameInterval) clearInterval(gameInterval);
+      gameInterval = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = timeLeft;
+        if (timeLeft <= 0) {
+          clearInterval(gameInterval);
+          gameOver();
+        }
+      }, 1000);
+    }
+
+    function stopGame() {
+      clearInterval(gameInterval);
+    }
+
+    function gameOver() {
+      alert(`Time's up! Your score: ${score} 💕`);
+      gameOverControls.style.display = 'block';
+    }
+
+    movingHeart.addEventListener('click', () => {
+      score++;
+      scoreEl.textContent = score;
+      // Animate explosion
+      movingHeart.classList.add('explode');
+      setTimeout(() => {
+        movingHeart.classList.remove('explode');
+        moveHeart();
+      }, 600);
+    });
+  </script>
+
+</body>
+</html>
