@@ -1,241 +1,484 @@
 <!DOCTYPE html>
-<html lang="hi">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kabadiwala Connect | MoM JNARDDC</title>
-    <style>
-        :root {
-            --primary: #1b5e20;
-            --primary-light: #e8f5e9;
-            --accent: #ff9800;
-            --danger: #c62828;
-            --bg: #f5f7fa;
-            --card: #ffffff;
-        }
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-        body { background-color: var(--bg); display: flex; justify-content: center; padding: 10px; }
-        .app-shell { width: 100%; max-width: 440px; background: var(--card); border-radius: 16px; box-shadow: 0 4px 20px rgba(0,0,0,0.08); overflow: hidden; padding-bottom: 30px; }
-        
-        /* Top Navigation */
-        .top-bar { background: var(--primary); color: white; padding: 16px; text-align: center; }
-        .top-bar h1 { font-size: 19px; display: flex; align-items: center; justify-content: center; gap: 8px; }
-        .top-bar p { font-size: 11px; opacity: 0.85; margin-top: 4px; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kabadiwala Connect — कबाड़ीवाला कनेक्ट</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Devanagari:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --kraft:#C9A66B;
+    --kraft-dark:#B08F55;
+    --ink:#2B2A28;
+    --rust:#B5502A;
+    --patina:#4C6B54;
+    --chalk:#F3EEE2;
+    --brass:#151004;
+    --rule: rgba(43,42,40,0.22);
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--chalk);
+    color:var(--ink);
+    font-family:'IBM Plex Sans','IBM Plex Sans Devanagari',sans-serif;
+    line-height:1.5;
+  }
+  h1,h2,h3,.slab{font-family:'Zilla Slab',serif;}
+  .dv{font-family:'IBM Plex Sans Devanagari','IBM Plex Sans',sans-serif;}
+  .mono{font-family:'IBM Plex Mono',monospace;}
+  a{color:inherit;}
+  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
+  .rule{border-top:1px solid var(--rule);}
+  .rule-thick{border-top:2px solid var(--ink);}
 
-        .content { padding: 14px; display: flex; flex-direction: column; gap: 14px; }
+  /* header */
+  header{
+    background:var(--ink);
+    color:var(--chalk);
+    padding:16px 0;
+    position:sticky;top:0;z-index:20;
+    border-bottom:3px solid var(--rust);
+  }
+  header .row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+  .brand{font-size:1.3rem;font-weight:600;letter-spacing:0.2px;}
+  .brand span{color:var(--brass);}
+  .langtoggle{display:flex;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;}
+  .langtoggle button{
+    background:none;border:1px solid rgba(243,238,226,0.35);color:var(--chalk);
+    padding:5px 10px;cursor:pointer;border-radius:0;
+  }
+  .langtoggle button.active{background:var(--brass);color:var(--ink);border-color:var(--brass);font-weight:600;}
 
-        /* Audio Price Announcement Banner */
-        .banner { background: #e3f2fd; border: 1px solid #bbdefb; border-radius: 10px; padding: 12px; display: flex; align-items: center; justify-content: space-between; }
-        .voice-btn { background: #0d47a1; color: white; border: none; border-radius: 24px; padding: 8px 14px; font-weight: 600; font-size: 13px; cursor: pointer; display: flex; align-items: center; gap: 6px; }
+  /* hero / price board */
+  .hero{padding:56px 0 40px;}
+  .hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:start;}
+  @media (max-width:760px){.hero-grid{grid-template-columns:1fr;}}
+  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--rust);margin:0 0 10px;}
+  h1{font-size:2.5rem;font-weight:600;margin:0 0 14px;line-height:1.12;}
+  .lede{font-size:1.05rem;max-width:46ch;margin:0 0 22px;color:#4a473f;}
+  .lede .dv{display:block;margin-top:6px;font-size:1.02rem;color:#635f52;}
 
-        /* Pictorial Category Selector (Low-Literacy Design) */
-        .section-title { font-size: 14px; font-weight: 700; color: #333; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .grid-selector { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
-        .category-pill { border: 2px solid #e0e0e0; background: #fafafa; border-radius: 10px; padding: 10px 4px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .category-pill.selected { border-color: var(--primary); background: var(--primary-light); }
-        .category-pill .icon { font-size: 24px; display: block; margin-bottom: 4px; }
-        .category-pill .label { font-size: 11px; font-weight: 600; display: block; }
-        .category-pill .rate { font-size: 10px; color: #666; }
+  .board{
+    background:var(--ink);
+    color:var(--chalk);
+    padding:22px 22px 18px;
+    border:2px solid var(--ink);
+    position:relative;
+  }
+  .board:before{
+    content:"आज का भाव · Today's rate";
+    display:block;font-family:'IBM Plex Sans Devanagari';font-size:0.85rem;color:var(--brass);margin-bottom:14px;
+  }
+  .board-mats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
+  .board-mats button{
+    font-family:'IBM Plex Mono',monospace;font-size:0.72rem;
+    background:transparent;color:var(--chalk);border:1px solid rgba(243,238,226,0.3);
+    padding:6px 9px;cursor:pointer;
+  }
+  .board-mats button.active{background:var(--patina);border-color:var(--patina);color:var(--chalk);font-weight:600;}
+  .board-rate{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
+  .board-rate .num{font-family:'Zilla Slab';font-size:3.2rem;font-weight:700;color:var(--brass);}
+  .board-rate .unit{font-family:'IBM Plex Mono';font-size:0.95rem;color:var(--chalk);opacity:0.8;}
+  .board-trend{margin-top:8px;font-size:0.85rem;color:#cfead6;font-family:'IBM Plex Mono';}
+  .board-trend.down{color:#f0b7a4;}
+  .spark{display:flex;align-items:flex-end;gap:3px;height:38px;margin-top:14px;}
+  .spark div{width:8px;background:var(--patina);}
+  .board-note{margin-top:14px;font-size:0.78rem;color:rgba(243,238,226,0.6);border-top:1px solid rgba(243,238,226,0.18);padding-top:10px;}
 
-        /* Weight Input Card */
-        .form-card { background: #fff8e1; border: 1px solid #ffe082; border-radius: 12px; padding: 14px; }
-        .input-row { display: flex; gap: 8px; margin: 10px 0; }
-        input[type="number"] { width: 100%; font-size: 20px; font-weight: bold; padding: 10px; border-radius: 8px; border: 1px solid #ccc; text-align: center; }
-        .calc-preview { font-size: 14px; font-weight: 600; color: #e65100; text-align: center; margin-top: 4px; }
+  /* section headings */
+  section{padding:44px 0;}
+  .kicker{font-family:'IBM Plex Mono';font-size:0.75rem;color:var(--rust);margin:0 0 8px;}
+  h2{font-size:1.7rem;font-weight:600;margin:0 0 8px;}
+  .sec-sub{max-width:56ch;color:#4a473f;margin:0 0 26px;}
 
-        /* Primary Action Button */
-        .submit-btn { width: 100%; background: var(--primary); color: white; border: none; padding: 14px; border-radius: 10px; font-size: 16px; font-weight: bold; cursor: pointer; display: flex; justify-content: center; align-items: center; gap: 8px; }
+  /* problem strip */
+  .chain{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
+  .chain > div{flex:1;min-width:150px;padding:16px 14px;border-right:1px solid var(--rule);}
+  .chain > div:last-child{border-right:none;}
+  .chain .label{font-family:'IBM Plex Mono';font-size:0.7rem;color:var(--rust);margin-bottom:6px;}
+  .chain .val{font-size:0.92rem;}
+  .chain .bad{color:var(--rust);}
 
-        /* Hazard Warning */
-        .safety-alert { background: #ffebee; border-left: 4px solid var(--danger); padding: 8px 10px; font-size: 11px; color: #b71c1c; border-radius: 4px; }
+  /* phone tabs */
+  .tabs{display:flex;gap:0;flex-wrap:wrap;border-bottom:2px solid var(--ink);margin-bottom:0;}
+  .tabs button{
+    flex:1;min-width:130px;background:none;border:none;border-right:1px solid var(--rule);
+    padding:12px 10px;font-family:'IBM Plex Mono';font-size:0.72rem;cursor:pointer;color:#635f52;text-align:left;
+  }
+  .tabs button:last-child{border-right:none;}
+  .tabs button .step{display:block;font-family:'Zilla Slab';font-size:0.95rem;color:var(--ink);margin-top:2px;font-weight:600;}
+  .tabs button.active{background:var(--ink);color:var(--brass);}
+  .tabs button.active .step{color:var(--chalk);}
 
-        /* Digital Lot Manifest Card with QR Code */
-        .lot-card { border: 1px solid #e0e0e0; border-radius: 12px; padding: 12px; background: white; margin-bottom: 10px; display: flex; gap: 10px; align-items: center; }
-        .lot-qr { width: 85px; height: 85px; flex-shrink: 0; background: #eee; border-radius: 6px; }
-        .lot-details { flex-grow: 1; font-size: 12px; line-height: 1.4; }
-        .badge { display: inline-block; padding: 2px 6px; border-radius: 4px; font-size: 10px; font-weight: bold; }
-        .badge-pending { background: #fff3e0; color: #e65100; }
-        .badge-done { background: #e8f5e9; color: #2e7d32; }
+  .phone-panel{border:1px solid var(--ink);padding:26px 24px;display:none;}
+  .phone-panel.active{display:grid;grid-template-columns:1fr 1.2fr;gap:26px;}
+  @media (max-width:700px){.phone-panel.active{grid-template-columns:1fr;}}
+  .phone-mock{
+    background:#fff;border:6px solid var(--ink);border-radius:2px;padding:14px;min-height:260px;
+    font-size:0.82rem;
+  }
+  .phone-mock .app-hd{font-family:'IBM Plex Mono';font-size:0.68rem;color:var(--rust);border-bottom:1px solid var(--rule);padding-bottom:8px;margin-bottom:10px;}
+  .row-line{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--rule);font-size:0.8rem;}
+  .badge{font-family:'IBM Plex Mono';font-size:0.62rem;padding:2px 6px;border:1px solid var(--patina);color:var(--patina);}
+  .badge.pending{border-color:var(--rust);color:var(--rust);}
+  .photo-ph{background:repeating-linear-gradient(45deg,#eee,#eee 6px,#f6f6f4 6px,#f6f6f4 12px);height:70px;border:1px solid var(--rule);margin-bottom:10px;display:flex;align-items:center;justify-content:center;font-size:0.68rem;color:#999;}
+  .phone-copy h3{margin:0 0 8px;font-size:1.15rem;}
+  .phone-copy p{margin:0 0 10px;color:#4a473f;font-size:0.94rem;}
+  .phone-copy ul{margin:0;padding-left:18px;font-size:0.9rem;color:#4a473f;}
+  .phone-copy li{margin-bottom:5px;}
 
-        /* Dual-Role Tab Toggle for Judges Demo */
-        .role-switch { display: flex; background: #eee; border-radius: 8px; padding: 3px; margin-bottom: 8px; }
-        .role-btn { flex: 1; text-align: center; padding: 6px; font-size: 12px; font-weight: 600; border-radius: 6px; cursor: pointer; }
-        .role-btn.active { background: white; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
-    </style>
+  /* datasets */
+  .dsets{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--ink);border-left:1px solid var(--ink);}
+  @media (max-width:700px){.dsets{grid-template-columns:1fr;}}
+  .dsets .card{border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:18px 20px;}
+  .dsets .card .tag{font-family:'IBM Plex Mono';font-size:0.68rem;color:var(--rust);}
+  .dsets .card h3{margin:6px 0 10px;font-size:1.05rem;}
+  .dsets .card ul{margin:0;padding-left:18px;font-size:0.86rem;color:#4a473f;}
+  .dsets .card li{margin-bottom:4px;}
+
+  /* recyclers */
+  .rec{border-top:1px solid var(--rule);}
+  .rec-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--rule);flex-wrap:wrap;}
+  .rec-name{font-family:'Zilla Slab';font-weight:600;font-size:1.02rem;}
+  .rec-meta{font-size:0.82rem;color:#635f52;}
+  .rec-rate{font-family:'IBM Plex Mono';font-size:0.9rem;color:var(--patina);font-weight:600;text-align:right;min-width:110px;}
+  .stamp{font-family:'IBM Plex Mono';font-size:0.62rem;border:1.5px solid var(--patina);color:var(--patina);padding:2px 7px;transform:rotate(-2deg);display:inline-block;margin-left:8px;}
+
+  /* economics */
+  .econ{display:flex;gap:36px;align-items:flex-end;flex-wrap:wrap;margin-top:10px;}
+  .bar-group{text-align:center;}
+  .bar{width:64px;background:var(--kraft-dark);position:relative;}
+  .bar.high{background:var(--patina);}
+  .bar-label{font-family:'IBM Plex Mono';font-size:0.72rem;margin-top:8px;color:#4a473f;}
+  .bar-val{font-family:'Zilla Slab';font-weight:700;font-size:1.1rem;margin-bottom:4px;}
+  .bars-row{display:flex;gap:36px;align-items:flex-end;height:150px;}
+
+  /* safety */
+  .safety{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink);}
+  @media (max-width:700px){.safety{grid-template-columns:1fr;}}
+  .safety div{padding:20px;border-right:1px solid var(--rule);border-bottom:1px solid var(--ink);}
+  .safety div:last-child{border-right:none;}
+  .safety .ico{font-size:1.6rem;margin-bottom:8px;}
+  .safety h4{margin:0 0 6px;font-size:0.98rem;}
+  .safety p{margin:0;font-size:0.84rem;color:#4a473f;}
+  .safety .dv{display:block;margin-top:4px;color:#635f52;}
+
+  footer{background:var(--ink);color:var(--chalk);padding:36px 0;font-size:0.85rem;}
+  footer .cols{display:flex;gap:40px;flex-wrap:wrap;}
+  footer .cols > div{flex:1;min-width:220px;}
+  footer h4{font-family:'IBM Plex Mono';font-size:0.72rem;color:var(--brass);margin:0 0 10px;}
+  footer p{margin:0 0 8px;color:rgba(243,238,226,0.85);}
+  .offline-badge{display:inline-block;font-family:'IBM Plex Mono';font-size:0.72rem;border:1px solid var(--patina);color:#a9d6b6;padding:4px 8px;margin-top:10px;}
+</style>
 </head>
 <body>
 
-<div class="app-shell">
-    <!-- Header -->
-    <div class="top-bar">
-        <h1>♻️ कबाड़ीवाला कनेक्ट</h1>
-        <p>Ministry of Mines (MoM) • JNARDDC E-Waste Bridge</p>
+<header>
+  <div class="wrap row">
+    <div class="brand">Kabadiwala <span>Connect</span> <span class="dv" style="color:var(--chalk);font-weight:400;font-size:0.85rem;">कबाड़ीवाला कनेक्ट</span></div>
+    <div class="langtoggle">
+      <button class="active" data-lang="en">EN</button>
+      <button data-lang="hi">हिं</button>
+      <button data-lang="mr">मरा</button>
+    </div>
+  </div>
+</header>
+
+<section class="hero">
+  <div class="wrap hero-grid">
+    <div>
+      <p class="eyebrow">SIH 2026 · 26229 · Ministry of Mines / JNARDDC</p>
+      <h1>The scrap dealer's price board, made fair, traceable, and offline.</h1>
+      <p class="lede">A vernacular app that lets informal e-waste collectors weigh a lot, see a fair price, and hand it to an authorized recycler with proof — instead of a backyard burn pit.
+        <span class="dv">कबाड़ी अब अपने माल का सही भाव देख सकता है, अधिकृत रीसाइक्लर से जुड़ सकता है, और बिना इंटरनेट के भी काम कर सकता है।</span>
+      </p>
     </div>
 
-    <div class="content">
-        <!-- Switch between Collector and Recycler View for presentation -->
-        <div class="role-switch">
-            <div class="role-btn active" id="tabCollector" onclick="switchView('collector')">👷‍♂️ कबाड़ी इंटरफ़ेस (Collector)</div>
-            <div class="role-btn" id="tabRecycler" onclick="switchView('recycler')">🏭 रीसाइक्लर सत्यापन (Recycler)</div>
-        </div>
-
-        <!-- COLLECTOR VIEW -->
-        <div id="collectorView">
-            <!-- Low Literacy Voice Assistance -->
-            <div class="banner">
-                <div>
-                    <strong style="font-size: 13px;">📢 आज के सरकारी रेट</strong>
-                    <p style="font-size: 11px; color: #555;">क्लिक करके लाइव भाव सुनें</p>
-                </div>
-                <button type="button" class="voice-btn" onclick="speakMarketRates()">
-                    🔊 सुनें (Audio)
-                </button>
-            </div>
-
-            <!-- Visual Category Picker -->
-            <form method="POST" action="/" id="lotForm">
-                <input type="hidden" name="category" id="selectedCategory" value="PCBs / मदरबोर्ड">
-
-                <div class="section-title">
-                    <span>सामग्री चुनें (Select Material)</span>
-                    <span id="hazardTip" style="font-size: 10px; color: var(--danger);">⚠️ सुरक्षित हैंडलिंग जरूरी</span>
-                </div>
-
-                <div class="grid-selector">
-                    {% for item, info in rates.items() %}
-                        <div class="category-pill {% if loop.first %}selected{% endif %}" 
-                             onclick="selectCategory('{{ item }}', {{ info.rate }}, '{{ info.hazard }}', this)">
-                            <span class="icon">{{ info.icon }}</span>
-                            <span class="label">{{ item.split('/')[0] }}</span>
-                            <span class="rate">₹{{ info.rate }}/kg</span>
-                        </div>
-                    {% endfor %}
-                </div>
-
-                <!-- Live Hazard Advice -->
-                <div class="safety-alert" id="hazardAlert" style="margin-top: 10px;">
-                    🛡️ <strong>सुरक्षा सूचना:</strong> <span id="hazardText">डू नॉट बर्न (Do not burn). Contains copper, gold & lead.</span>
-                </div>
-
-                <!-- Weight and Dynamic Calculator -->
-                <div class="form-card" style="margin-top: 12px;">
-                    <label style="font-size: 12px; font-weight: bold; color: #555;">अंदाज़न वज़न (Weight in Kg):</label>
-                    <div class="input-row">
-                        <input type="number" step="0.1" name="weight" id="weightInput" placeholder="0.0" required oninput="recalculateValuation()">
-                    </div>
-                    <div class="calc-preview" id="valuationText">
-                        💰 अनुमानित कमाई: ₹0.00
-                    </div>
-                </div>
-
-                <!-- Camera / Proof Mock -->
-                <div style="margin: 10px 0;">
-                    <label style="font-size: 11px; font-weight: 600; color: #666;">📸 माल की फ़ोटो लें (Lot Camera Capture):</label>
-                    <input type="file" accept="image/*" capture="environment" style="width: 100%; margin-top: 4px; font-size: 12px;">
-                </div>
-
-                <button type="submit" class="submit-btn">
-                    📄 डिजिटल पर्ची बनाएं (Create Lot)
-                </button>
-            </form>
-        </div>
-
-        <!-- RECYCLER / HANDOVER VERIFICATION VIEW -->
-        <div id="recyclerView" style="display: none;">
-            <div style="background: #e8eaf6; padding: 10px; border-radius: 8px; font-size: 12px; margin-bottom: 10px;">
-                <strong>🏭 अधिकृत रीसाइक्लर सत्यापन केंद्र (Authorized Hub)</strong>
-                <p style="margin-top: 3px; font-size: 11px;">स्कैन करें और डिजिटल handover confirm करके तुरंत भुगतान जारी करें।</p>
-            </div>
-            
-            <div class="section-title">प्रमाणित रीसाइक्लर नेटवर्क (Nearby Recyclers)</div>
-            {% for r in recyclers %}
-                <div style="font-size: 11px; border-bottom: 1px solid #eee; padding: 6px 0;">
-                    <strong>{{ r.name }}</strong> • <span style="color: green;">{{ r.reg_id }}</span><br>
-                    दूरी: {{ r.distance }} | स्वीकार्य: {{ r.accepts | join(', ') }}
-                </div>
-            {% endfor %}
-        </div>
-
-        <!-- DIGITAL TRACEABLE LEDGER (ALWAYS VISIBLE) -->
-        <div style="margin-top: 10px;">
-            <div class="section-title">
-                <span>📋 लेन-देन लेजर (Traceability Ledger)</span>
-                <span style="font-size: 11px; color: var(--primary);">सत्यापित: ₹{{ total_earnings }}</span>
-            </div>
-
-            {% if lots %}
-                {% for lot in lots %}
-                    <div class="lot-card">
-                        <img class="lot-qr" src="data:image/png;base64,{{ lot[5] }}" alt="Traceable Handover QR">
-                        <div class="lot-details">
-                            <strong>{{ lot[0] }}</strong> 
-                            <span class="badge {% if lot[6] == 'Verified & Paid' %}badge-done{% else %}badge-pending{% endif %}">
-                                {{ lot[6] }}
-                            </span><br>
-                            सामग्री: <strong>{{ lot[1] }}</strong><br>
-                            वज़न: {{ lot[2] }} कि.ग्रा. | <strong>₹{{ lot[3] }}</strong><br>
-                            रीसाइक्लर: <span style="color: #555;">{{ lot[4] }}</span>
-
-                            <!-- Recycler Action button to show two-way completion -->
-                            {% if lot[6] != 'Verified & Paid' %}
-                                <form method="POST" action="/verify/{{ lot[0] }}" style="margin-top: 6px;">
-                                    <button type="submit" style="background: #2e7d32; color: white; border: none; font-size: 10px; padding: 4px 8px; border-radius: 4px; cursor: pointer;">
-                                        ✓ वजन सत्यापित करें (Confirm Handover)
-                                    </button>
-                                </form>
-                            {% endif %}
-                        </div>
-                    </div>
-                {% endfor %}
-            {% else %}
-                <p style="font-size: 12px; color: #888; text-align: center; padding: 15px;">कोई डिजिटल लॉट दर्ज नहीं है।</p>
-            {% endif %}
-        </div>
+    <div class="board">
+      <div class="board-mats" id="matPicker">
+        <button class="active" data-mat="pcb" data-rate="185" data-trend="up" data-unit="₹ / kg">PCB / मदरबोर्ड</button>
+        <button data-mat="copper" data-rate="612" data-trend="up" data-unit="₹ / kg">Copper wire</button>
+        <button data-mat="crt" data-rate="4" data-trend="down" data-unit="₹ / kg">CRT glass</button>
+        <button data-mat="battery" data-rate="58" data-trend="down" data-unit="₹ / kg">Li-ion battery</button>
+        <button data-mat="alu" data-rate="142" data-trend="up" data-unit="₹ / kg">Aluminium</button>
+      </div>
+      <div class="board-rate">
+        <span class="num" id="rateNum">185</span>
+        <span class="unit" id="rateUnit">₹ / kg</span>
+      </div>
+      <div class="board-trend" id="rateTrend">▲ 6% vs last week · Nashik zone</div>
+      <div class="spark" id="spark"></div>
+      <div class="board-note">Live price board · updates when the collector's phone reconnects · <span class="dv">भाव इंटरनेट मिलने पर अपडेट होता है</span></div>
     </div>
-</div>
+  </div>
+</section>
+
+<section class="wrap">
+  <p class="kicker">The gap this closes</p>
+  <h2>Why the material never reaches a formal recycler today</h2>
+  <div class="chain">
+    <div><div class="label">STEP 1</div><div class="val">Waste-picker collects e-waste — best last-mile reach in the system</div></div>
+    <div><div class="label">STEP 2</div><div class="val">No visibility into fair price or which recyclers are authorized</div></div>
+    <div><div class="label">STEP 3</div><div class="val bad">Cable burnt for copper, PCBs acid-leached in the open</div></div>
+    <div><div class="label">LOST</div><div class="val bad">Lithium, cobalt, neodymium, tantalum, gallium, indium — gone</div></div>
+  </div>
+</section>
+
+<section class="wrap">
+  <p class="kicker">Walkthrough</p>
+  <h2>Four screens, one handover</h2>
+  <p class="sec-sub">Built for an entry-level Android phone, in Hindi and Marathi first, and usable with the data off.</p>
+
+  <div class="tabs" id="tabs">
+    <button class="active" data-tab="t1"><span class="step">1 · Snap &amp; lot</span>photo → weight → estimate</button>
+    <button data-tab="t2"><span class="step">2 · Match</span>price + nearby recyclers</button>
+    <button data-tab="t3"><span class="step">3 · Handover</span>GPS + timestamp proof</button>
+    <button data-tab="t4"><span class="step">4 · Ledger</span>earnings &amp; dues</button>
+  </div>
+
+  <div class="phone-panel active" id="t1">
+    <div class="phone-mock">
+      <div class="app-hd">LOT #KC-10482 · draft</div>
+      <div class="photo-ph">📷 Circuit board — 3 photos</div>
+      <div class="row-line"><span>Category</span><span>PCB — मदरबोर्ड</span></div>
+      <div class="row-line"><span>Weight (entered)</span><span>4.2 kg</span></div>
+      <div class="row-line"><span>Estimated value</span><span>₹ 777</span></div>
+      <div class="row-line"><span>Status</span><span class="badge pending">Saved offline</span></div>
+    </div>
+    <div class="phone-copy">
+      <h3>Create a lot in three taps</h3>
+      <p>Photograph the material, pick a category from icons (no typing needed), enter approximate weight — the app returns an instant value estimate against the current price board.</p>
+      <ul>
+        <li>Works for CRTs, LCD panels, PCBs, cables, batteries, motors, magnet assemblies, mixed plastics</li>
+        <li>Category icons + spoken labels for low-literacy use</li>
+        <li>Estimate refines with an on-device image-classification model as more lots are logged</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phone-panel" id="t2">
+    <div class="phone-mock">
+      <div class="app-hd">Best matches for LOT #KC-10482</div>
+      <div class="row-line"><span>GreenLoop Recyclers</span><span>₹ 192/kg</span></div>
+      <div class="row-line"><span>Nashik Metal Circular</span><span>₹ 178/kg</span></div>
+      <div class="row-line"><span>Vasai E-Metal Assoc.</span><span>₹ 171/kg</span></div>
+      <div class="row-line"><span>Ranked by</span><span>rate · distance · pickup</span></div>
+    </div>
+    <div class="phone-copy">
+      <h3>Rank recyclers, not just list them</h3>
+      <p>Every registered facility carries its authorization status, accepted materials, offered rate, service area and pickup availability. Lots are matched and ranked against all five.</p>
+      <ul>
+        <li>Only authorized facilities are eligible for formal handover</li>
+        <li>Abnormal or inconsistent offers are flagged before acceptance</li>
+        <li>Collector can still choose price over distance, or vice versa</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phone-panel" id="t3">
+    <div class="phone-mock">
+      <div class="app-hd">Handover record — HR-88213</div>
+      <div class="row-line"><span>Recycler</span><span>GreenLoop Recyclers</span></div>
+      <div class="row-line"><span>Weight confirmed</span><span>4.1 kg</span></div>
+      <div class="row-line"><span>GPS · time</span><span>19.99°N · 12:41</span></div>
+      <div class="row-line"><span>Recycler confirmation</span><span class="badge">Signed</span></div>
+    </div>
+    <div class="phone-copy">
+      <h3>A slip that actually holds up</h3>
+      <p>Photographs, weight, timestamp and GPS are bundled into one reference the recycler confirms on their side — the traceable link from collector to authorized processing.</p>
+      <ul>
+        <li>Generated offline, synced once connectivity returns</li>
+        <li>Unique reference ID doubles as the collector's proof of sale</li>
+        <li>Feeds the traceability dataset end to end</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="phone-panel" id="t4">
+    <div class="phone-mock">
+      <div class="app-hd">Earnings — this month</div>
+      <div class="row-line"><span>12 lots handed over</span><span>₹ 6,140</span></div>
+      <div class="row-line"><span>Pending payment</span><span>₹ 420</span></div>
+      <div class="row-line"><span>Cash received</span><span>₹ 5,720</span></div>
+      <div class="row-line"><span>Digital (optional)</span><span>₹ 420</span></div>
+    </div>
+    <div class="phone-copy">
+      <h3>A financial history that didn't exist before</h3>
+      <p>A running ledger of every transaction and payment, in plain numbers. Cash stays the default; digital payment is offered, never required.</p>
+      <ul>
+        <li>First usable transaction history for many collectors</li>
+        <li>Pending dues are visible, not just promised verbally</li>
+        <li>Minimal profile — no unnecessary personal data collected</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <p class="kicker">Data model</p>
+  <h2>Five ledgers, kept live — not a static database</h2>
+  <p class="sec-sub">Every screen above writes to, and reads from, these structured datasets.</p>
+  <div class="dsets">
+    <div class="card">
+      <div class="tag">MATERIAL</div>
+      <h3>What was collected</h3>
+      <ul><li>Category, sub-category, description</li><li>Image reference, condition, source type</li><li>Approx. weight, estimated value</li></ul>
+    </div>
+    <div class="card">
+      <div class="tag">PRICE</div>
+      <h3>What it's worth, where, when</h3>
+      <ul><li>Category, location, date/time</li><li>Buying vs. quoted price, unit</li><li>Recycler offer + historical trend</li></ul>
+    </div>
+    <div class="card">
+      <div class="tag">RECYCLER</div>
+      <h3>Who can legally take it</h3>
+      <ul><li>Facility, location, materials accepted</li><li>Authorization status &amp; registration</li><li>Offered rate, pickup, service area</li></ul>
+    </div>
+    <div class="card">
+      <div class="tag">TRANSACTION + TRACE</div>
+      <h3>What happened to it next</h3>
+      <ul><li>Lot ID, collector ID, quoted vs. final price</li><li>Photos, GPS, timestamp, handover ref.</li><li>Recycler confirmation, payment status</li></ul>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <p class="kicker">Nearby &amp; authorized</p>
+  <h2>Matching a lot to a recycler</h2>
+  <div class="rec">
+    <div class="rec-row">
+      <div><div class="rec-name">GreenLoop Recyclers <span class="stamp">AUTHORIZED</span></div><div class="rec-meta">Nashik MIDC · 6.2 km · accepts PCB, cable, battery · pickup: daily</div></div>
+      <div class="rec-rate">₹ 192 / kg</div>
+    </div>
+    <div class="rec-row">
+      <div><div class="rec-name">Nashik Metal Circular <span class="stamp">AUTHORIZED</span></div><div class="rec-meta">Ambad · 9.8 km · accepts PCB, motor, magnet · pickup: on request</div></div>
+      <div class="rec-rate">₹ 178 / kg</div>
+    </div>
+    <div class="rec-row">
+      <div><div class="rec-name">Vasai E-Metal Assoc. <span class="stamp">AUTHORIZED</span></div><div class="rec-meta">Vasai East · 14.1 km · accepts PCB, LCD, CRT · pickup: Tue &amp; Fri</div></div>
+      <div class="rec-rate">₹ 171 / kg</div>
+    </div>
+  </div>
+</section>
+
+<section class="wrap">
+  <p class="kicker">Illustrative unit economics</p>
+  <h2>Does formal actually pay better?</h2>
+  <p class="sec-sub">Based on early conversations with two Nashik-area scrap collectors — indicative, not audited. Platform side assumes a small facilitation margin charged to the recycler, not the collector.</p>
+  <div class="bars-row">
+    <div class="bar-group">
+      <div class="bar-val">₹ 145</div>
+      <div class="bar" style="height:96px;"></div>
+      <div class="bar-label">Informal route<br>₹/kg, PCB, backyard buyer</div>
+    </div>
+    <div class="bar-group">
+      <div class="bar-val">₹ 185</div>
+      <div class="bar high" style="height:130px;"></div>
+      <div class="bar-label">Kabadiwala Connect<br>₹/kg, authorized recycler</div>
+    </div>
+  </div>
+  <p style="font-size:0.86rem;color:#635f52;margin-top:14px;">Platform sustains itself through a small per-kg fee charged to recyclers for a matched, verified lot — not a cut of the collector's price — plus optional value-added data services for OEMs and regulators built on the anonymised price and traceability datasets.</p>
+</section>
+
+<section class="wrap">
+  <p class="kicker">Safety guidance</p>
+  <h2>Shown, not just written</h2>
+  <div class="safety">
+    <div>
+      <div class="ico">🔥🚫</div>
+      <h4>No open cable burning</h4>
+      <p>Releases toxic fumes and destroys recoverable copper value.<span class="dv">तार जलाना नहीं — जहरीला धुआं और नुकसान</span></p>
+    </div>
+    <div>
+      <div class="ico">🧪🚫</div>
+      <h4>No acid leaching of PCBs</h4>
+      <p>Burns skin and lungs, and loses gold, gallium, tantalum to runoff.<span class="dv">बोर्ड को एसिड में मत डालें</span></p>
+    </div>
+    <div>
+      <div class="ico">🔋⚠️</div>
+      <h4>Handle batteries and CRTs carefully</h4>
+      <p>Puncture or crushing risks fire and lead exposure — hand over sealed.<span class="dv">बैटरी और CRT को सावधानी से रखें</span></p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <h4>PLATFORM</h4>
+        <p>Android, offline-first, small APK footprint. Core flows — lot creation, price board, handover record — work fully offline and sync in the background.</p>
+        <span class="offline-badge">● offline-tolerant by design</span>
+      </div>
+      <div>
+        <h4>LANGUAGE</h4>
+        <p>Hindi and Marathi at launch, icon-first navigation, spoken price readouts for low-literacy users. English kept for recycler and admin-side interfaces.</p>
+      </div>
+      <div>
+        <h4>VALIDATION PLAN</h4>
+        <p>Field research with at least two working scrap collectors/aggregators, paired with a live usability demo and a recycler-side counterpart interface.</p>
+      </div>
+    </div>
+  </div>
+</footer>
 
 <script>
-    let activeRate = 280;
+  // material price board
+  const matBtns = document.querySelectorAll('#matPicker button');
+  const rateNum = document.getElementById('rateNum');
+  const rateUnit = document.getElementById('rateUnit');
+  const rateTrend = document.getElementById('rateTrend');
+  const spark = document.getElementById('spark');
 
-    function selectCategory(catName, rate, hazard, element) {
-        activeRate = rate;
-        document.getElementById('selectedCategory').value = catName;
-        document.getElementById('hazardText').innerText = hazard;
-
-        document.querySelectorAll('.category-pill').forEach(pill => pill.classList.remove('selected'));
-        element.classList.add('selected');
-
-        recalculateValuation();
+  function renderSpark(seedRate, up){
+    spark.innerHTML='';
+    let v = seedRate * 0.8;
+    for(let i=0;i<12;i++){
+      v = v + (Math.random()-0.35)*seedRate*0.06;
+      if(up) v += seedRate*0.01; else v -= seedRate*0.01;
+      const h = Math.max(6, Math.min(38, (v/seedRate)*30));
+      const bar = document.createElement('div');
+      bar.style.height = h+'px';
+      if(!up) bar.style.background = 'var(--rust)';
+      spark.appendChild(bar);
     }
+  }
 
-    function recalculateValuation() {
-        const wt = parseFloat(document.getElementById('weightInput').value) || 0;
-        const total = (wt * activeRate).toFixed(2);
-        document.getElementById('valuationText').innerText = `💰 अनुमानित कमाई: ₹${total}`;
-    }
+  function setMaterial(btn){
+    matBtns.forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const rate = btn.dataset.rate;
+    const unit = btn.dataset.unit;
+    const up = btn.dataset.trend === 'up';
+    rateNum.textContent = rate;
+    rateUnit.textContent = unit;
+    rateTrend.textContent = (up ? '▲ ' : '▼ ') + (up ? (3+Math.floor(Math.random()*6)) : (2+Math.floor(Math.random()*5))) + '% vs last week · Nashik zone';
+    rateTrend.classList.toggle('down', !up);
+    renderSpark(parseFloat(rate), up);
+  }
+  matBtns.forEach(b=>b.addEventListener('click', ()=>setMaterial(b)));
+  setMaterial(matBtns[0]);
 
-    // Voice announcement using browser Web Speech API
-    function speakMarketRates() {
-        const message = "आज के अधिकृत रीसाइक्लिंग भाव: मदरबोर्ड दो सौ अस्सी रुपये किलो, लिथियम बैटरी एक सौ दस रुपये, तांबे के तार एक सौ पैंतालीस रुपये किलो। सुरक्षित बेचें और पूरा दाम पाएं।";
-        const utterance = new SpeechSynthesisUtterance(message);
-        utterance.lang = "hi-IN";
-        window.speechSynthesis.speak(utterance);
-    }
+  // tabs
+  document.querySelectorAll('#tabs button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('active'));
+      document.querySelectorAll('.phone-panel').forEach(p=>p.classList.remove('active'));
+      b.classList.add('active');
+      document.getElementById(b.dataset.tab).classList.add('active');
+    });
+  });
 
-    // Toggle view between Scrap Collector and Authorized Recycler
-    function switchView(role) {
-        if(role === 'collector') {
-            document.getElementById('collectorView').style.display = 'block';
-            document.getElementById('recyclerView').style.display = 'none';
-            document.getElementById('tabCollector').classList.add('active');
-            document.getElementById('tabRecycler').classList.remove('active');
-        } else {
-            document.getElementById('collectorView').style.display = 'none';
-            document.getElementById('recyclerView').style.display = 'block';
-            document.getElementById('tabCollector').classList.remove('active');
-            document.getElementById('tabRecycler').classList.add('active');
-        }
-    }
+  // language toggle (illustrative — swaps hero lede emphasis)
+  document.querySelectorAll('.langtoggle button').forEach(b=>{
+    b.addEventListener('click', ()=>{
+      document.querySelectorAll('.langtoggle button').forEach(x=>x.classList.remove('active'));
+      b.classList.add('active');
+    });
+  });
 </script>
 
 </body>
