@@ -2,484 +2,153 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kabadiwala Connect — कबाड़ीवाला कनेक्ट</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Zilla+Slab:wght@400;500;600;700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Sans+Devanagari:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#f6c3cd">
+<title>I'm Sorry!</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --kraft:#C9A66B;
-    --kraft-dark:#B08F55;
-    --ink:#2B2A28;
-    --rust:#B5502A;
-    --patina:#4C6B54;
-    --chalk:#F3EEE2;
-    --brass:#151004;
-    --rule: rgba(43,42,40,0.22);
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  /* One size knob: everything below uses rem, so the whole page scales
+     from small Android phones up to big Windows monitors. */
+  html { font-size: clamp(14px, 1.2vmin + 10px, 24px); height: 100%; }
+
+  body {
+    min-height: 100%; height: 100dvh; overflow: hidden; position: relative;
+    font-family: 'Poppins', system-ui, 'Segoe UI', Roboto, sans-serif;
+    touch-action: manipulation; user-select: none; -webkit-user-select: none;
+    /* Optional: add your own bg.jpg next to this file. Falls back to the drawn tulips. */
+    background:
+      url('bg.jpg') center / cover no-repeat,
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 300' preserveAspectRatio='xMidYMax slice'%3E%3Cg fill='%23ee8fa3' opacity='.85'%3E%3Cellipse cx='50' cy='250' rx='46' ry='52'/%3E%3Cellipse cx='200' cy='265' rx='54' ry='56'/%3E%3Cellipse cx='350' cy='248' rx='48' ry='54'/%3E%3C/g%3E%3Cg fill='%23c85d78' opacity='.55'%3E%3Cellipse cx='50' cy='245' rx='20' ry='30'/%3E%3Cellipse cx='200' cy='258' rx='24' ry='32'/%3E%3Cellipse cx='350' cy='242' rx='21' ry='30'/%3E%3C/g%3E%3Cg stroke='%2379a36b' stroke-width='6' fill='none' stroke-linecap='round'%3E%3Cpath d='M50 300v-5M200 300v-3M350 300v-5'/%3E%3C/g%3E%3C/svg%3E") bottom / cover no-repeat,
+      linear-gradient(160deg, #fbe3e8, #f3bfca);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    gap: 2.4rem; padding: env(safe-area-inset-top) 1rem env(safe-area-inset-bottom);
   }
-  *{box-sizing:border-box;}
-  html{scroll-behavior:smooth;}
-  body{
-    margin:0;
-    background:var(--chalk);
-    color:var(--ink);
-    font-family:'IBM Plex Sans','IBM Plex Sans Devanagari',sans-serif;
-    line-height:1.5;
+
+  /* ---------- CARD ---------- */
+  .card {
+    width: min(19rem, 86vw); padding: 1rem 1.1rem 1.3rem; text-align: center;
+    background: #fff; border-radius: 1.3rem;
+    box-shadow: 0 .7rem 2rem rgba(120, 40, 70, .2);
+    animation: float 4s ease-in-out infinite;
   }
-  h1,h2,h3,.slab{font-family:'Zilla Slab',serif;}
-  .dv{font-family:'IBM Plex Sans Devanagari','IBM Plex Sans',sans-serif;}
-  .mono{font-family:'IBM Plex Mono',monospace;}
-  a{color:inherit;}
-  .wrap{max-width:920px;margin:0 auto;padding:0 24px;}
-  .rule{border-top:1px solid var(--rule);}
-  .rule-thick{border-top:2px solid var(--ink);}
+  @keyframes float { 50% { transform: translateY(-.4rem); } }
 
-  /* header */
-  header{
-    background:var(--ink);
-    color:var(--chalk);
-    padding:16px 0;
-    position:sticky;top:0;z-index:20;
-    border-bottom:3px solid var(--rust);
+  .pic {
+    width: 10rem; height: 10.5rem; margin: 0 auto 1rem; background: #fff;
+    border-radius: .4rem; box-shadow: 0 .2rem .7rem rgba(0,0,0,.12);
+    display: flex; align-items: center; justify-content: center; overflow: hidden;
   }
-  header .row{display:flex;align-items:baseline;justify-content:space-between;gap:16px;flex-wrap:wrap;}
-  .brand{font-size:1.3rem;font-weight:600;letter-spacing:0.2px;}
-  .brand span{color:var(--brass);}
-  .langtoggle{display:flex;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:0.78rem;}
-  .langtoggle button{
-    background:none;border:1px solid rgba(243,238,226,0.35);color:var(--chalk);
-    padding:5px 10px;cursor:pointer;border-radius:0;
+  .pic img, .pic svg { width: 100%; height: 100%; object-fit: contain; }
+
+  h1 { font-size: 1.5rem; font-weight: 800; color: #3b0a6b; margin-bottom: .4rem; }
+  #msg { font-size: .85rem; color: #555; line-height: 1.5; min-height: 2.6rem; }
+
+  /* ---------- BUTTONS ---------- */
+  .btns { display: flex; gap: 2.2rem; align-items: center; }
+  button {
+    border: 0; cursor: pointer; color: #fff; font: 600 1rem 'Poppins', system-ui, sans-serif;
+    padding: .8rem 2.2rem; border-radius: 999px; min-height: 2.8rem; /* big enough for thumbs */
+    transition: transform .15s ease;
   }
-  .langtoggle button.active{background:var(--brass);color:var(--ink);border-color:var(--brass);font-weight:600;}
+  #yes { background: #32b521; }
+  #no  { background: #ff0000; }
+  @media (hover: hover) { #yes:hover { transform: scale(1.08); } }  /* mouse only */
 
-  /* hero / price board */
-  .hero{padding:56px 0 40px;}
-  .hero-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:40px;align-items:start;}
-  @media (max-width:760px){.hero-grid{grid-template-columns:1fr;}}
-  .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:0.78rem;color:var(--rust);margin:0 0 10px;}
-  h1{font-size:2.5rem;font-weight:600;margin:0 0 14px;line-height:1.12;}
-  .lede{font-size:1.05rem;max-width:46ch;margin:0 0 22px;color:#4a473f;}
-  .lede .dv{display:block;margin-top:6px;font-size:1.02rem;color:#635f52;}
+  .clone { position: fixed; z-index: 10; background: #32b521; animation: pop .35s ease-out both; }
+  @keyframes pop { from { opacity: 0; transform: scale(.3); } to { opacity: 1; transform: scale(1); } }
 
-  .board{
-    background:var(--ink);
-    color:var(--chalk);
-    padding:22px 22px 18px;
-    border:2px solid var(--ink);
-    position:relative;
+  /* ---------- SUCCESS SCREEN ---------- */
+  #done {
+    position: fixed; inset: 0; z-index: 9999; display: none; padding: 1.5rem; text-align: center;
+    flex-direction: column; align-items: center; justify-content: center; gap: .8rem;
+    background: linear-gradient(160deg, #fde7ec, #f6b9c6);
   }
-  .board:before{
-    content:"आज का भाव · Today's rate";
-    display:block;font-family:'IBM Plex Sans Devanagari';font-size:0.85rem;color:var(--brass);margin-bottom:14px;
-  }
-  .board-mats{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:18px;}
-  .board-mats button{
-    font-family:'IBM Plex Mono',monospace;font-size:0.72rem;
-    background:transparent;color:var(--chalk);border:1px solid rgba(243,238,226,0.3);
-    padding:6px 9px;cursor:pointer;
-  }
-  .board-mats button.active{background:var(--patina);border-color:var(--patina);color:var(--chalk);font-weight:600;}
-  .board-rate{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;}
-  .board-rate .num{font-family:'Zilla Slab';font-size:3.2rem;font-weight:700;color:var(--brass);}
-  .board-rate .unit{font-family:'IBM Plex Mono';font-size:0.95rem;color:var(--chalk);opacity:0.8;}
-  .board-trend{margin-top:8px;font-size:0.85rem;color:#cfead6;font-family:'IBM Plex Mono';}
-  .board-trend.down{color:#f0b7a4;}
-  .spark{display:flex;align-items:flex-end;gap:3px;height:38px;margin-top:14px;}
-  .spark div{width:8px;background:var(--patina);}
-  .board-note{margin-top:14px;font-size:0.78rem;color:rgba(243,238,226,0.6);border-top:1px solid rgba(243,238,226,0.18);padding-top:10px;}
-
-  /* section headings */
-  section{padding:44px 0;}
-  .kicker{font-family:'IBM Plex Mono';font-size:0.75rem;color:var(--rust);margin:0 0 8px;}
-  h2{font-size:1.7rem;font-weight:600;margin:0 0 8px;}
-  .sec-sub{max-width:56ch;color:#4a473f;margin:0 0 26px;}
-
-  /* problem strip */
-  .chain{display:flex;flex-wrap:wrap;gap:0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);}
-  .chain > div{flex:1;min-width:150px;padding:16px 14px;border-right:1px solid var(--rule);}
-  .chain > div:last-child{border-right:none;}
-  .chain .label{font-family:'IBM Plex Mono';font-size:0.7rem;color:var(--rust);margin-bottom:6px;}
-  .chain .val{font-size:0.92rem;}
-  .chain .bad{color:var(--rust);}
-
-  /* phone tabs */
-  .tabs{display:flex;gap:0;flex-wrap:wrap;border-bottom:2px solid var(--ink);margin-bottom:0;}
-  .tabs button{
-    flex:1;min-width:130px;background:none;border:none;border-right:1px solid var(--rule);
-    padding:12px 10px;font-family:'IBM Plex Mono';font-size:0.72rem;cursor:pointer;color:#635f52;text-align:left;
-  }
-  .tabs button:last-child{border-right:none;}
-  .tabs button .step{display:block;font-family:'Zilla Slab';font-size:0.95rem;color:var(--ink);margin-top:2px;font-weight:600;}
-  .tabs button.active{background:var(--ink);color:var(--brass);}
-  .tabs button.active .step{color:var(--chalk);}
-
-  .phone-panel{border:1px solid var(--ink);padding:26px 24px;display:none;}
-  .phone-panel.active{display:grid;grid-template-columns:1fr 1.2fr;gap:26px;}
-  @media (max-width:700px){.phone-panel.active{grid-template-columns:1fr;}}
-  .phone-mock{
-    background:#fff;border:6px solid var(--ink);border-radius:2px;padding:14px;min-height:260px;
-    font-size:0.82rem;
-  }
-  .phone-mock .app-hd{font-family:'IBM Plex Mono';font-size:0.68rem;color:var(--rust);border-bottom:1px solid var(--rule);padding-bottom:8px;margin-bottom:10px;}
-  .row-line{display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px dashed var(--rule);font-size:0.8rem;}
-  .badge{font-family:'IBM Plex Mono';font-size:0.62rem;padding:2px 6px;border:1px solid var(--patina);color:var(--patina);}
-  .badge.pending{border-color:var(--rust);color:var(--rust);}
-  .photo-ph{background:repeating-linear-gradient(45deg,#eee,#eee 6px,#f6f6f4 6px,#f6f6f4 12px);height:70px;border:1px solid var(--rule);margin-bottom:10px;display:flex;align-items:center;justify-content:center;font-size:0.68rem;color:#999;}
-  .phone-copy h3{margin:0 0 8px;font-size:1.15rem;}
-  .phone-copy p{margin:0 0 10px;color:#4a473f;font-size:0.94rem;}
-  .phone-copy ul{margin:0;padding-left:18px;font-size:0.9rem;color:#4a473f;}
-  .phone-copy li{margin-bottom:5px;}
-
-  /* datasets */
-  .dsets{display:grid;grid-template-columns:repeat(2,1fr);gap:0;border-top:1px solid var(--ink);border-left:1px solid var(--ink);}
-  @media (max-width:700px){.dsets{grid-template-columns:1fr;}}
-  .dsets .card{border-right:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:18px 20px;}
-  .dsets .card .tag{font-family:'IBM Plex Mono';font-size:0.68rem;color:var(--rust);}
-  .dsets .card h3{margin:6px 0 10px;font-size:1.05rem;}
-  .dsets .card ul{margin:0;padding-left:18px;font-size:0.86rem;color:#4a473f;}
-  .dsets .card li{margin-bottom:4px;}
-
-  /* recyclers */
-  .rec{border-top:1px solid var(--rule);}
-  .rec-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--rule);flex-wrap:wrap;}
-  .rec-name{font-family:'Zilla Slab';font-weight:600;font-size:1.02rem;}
-  .rec-meta{font-size:0.82rem;color:#635f52;}
-  .rec-rate{font-family:'IBM Plex Mono';font-size:0.9rem;color:var(--patina);font-weight:600;text-align:right;min-width:110px;}
-  .stamp{font-family:'IBM Plex Mono';font-size:0.62rem;border:1.5px solid var(--patina);color:var(--patina);padding:2px 7px;transform:rotate(-2deg);display:inline-block;margin-left:8px;}
-
-  /* economics */
-  .econ{display:flex;gap:36px;align-items:flex-end;flex-wrap:wrap;margin-top:10px;}
-  .bar-group{text-align:center;}
-  .bar{width:64px;background:var(--kraft-dark);position:relative;}
-  .bar.high{background:var(--patina);}
-  .bar-label{font-family:'IBM Plex Mono';font-size:0.72rem;margin-top:8px;color:#4a473f;}
-  .bar-val{font-family:'Zilla Slab';font-weight:700;font-size:1.1rem;margin-bottom:4px;}
-  .bars-row{display:flex;gap:36px;align-items:flex-end;height:150px;}
-
-  /* safety */
-  .safety{display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid var(--ink);}
-  @media (max-width:700px){.safety{grid-template-columns:1fr;}}
-  .safety div{padding:20px;border-right:1px solid var(--rule);border-bottom:1px solid var(--ink);}
-  .safety div:last-child{border-right:none;}
-  .safety .ico{font-size:1.6rem;margin-bottom:8px;}
-  .safety h4{margin:0 0 6px;font-size:0.98rem;}
-  .safety p{margin:0;font-size:0.84rem;color:#4a473f;}
-  .safety .dv{display:block;margin-top:4px;color:#635f52;}
-
-  footer{background:var(--ink);color:var(--chalk);padding:36px 0;font-size:0.85rem;}
-  footer .cols{display:flex;gap:40px;flex-wrap:wrap;}
-  footer .cols > div{flex:1;min-width:220px;}
-  footer h4{font-family:'IBM Plex Mono';font-size:0.72rem;color:var(--brass);margin:0 0 10px;}
-  footer p{margin:0 0 8px;color:rgba(243,238,226,0.85);}
-  .offline-badge{display:inline-block;font-family:'IBM Plex Mono';font-size:0.72rem;border:1px solid var(--patina);color:#a9d6b6;padding:4px 8px;margin-top:10px;}
+  #done.show { display: flex; }
+  #done .big { font-size: 5rem; }
+  #done h2 { font-size: 2rem; font-weight: 800; color: #3b0a6b; }
+  #done p { color: #555; }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="wrap row">
-    <div class="brand">Kabadiwala <span>Connect</span> <span class="dv" style="color:var(--chalk);font-weight:400;font-size:0.85rem;">कबाड़ीवाला कनेक्ट</span></div>
-    <div class="langtoggle">
-      <button class="active" data-lang="en">EN</button>
-      <button data-lang="hi">हिं</button>
-      <button data-lang="mr">मरा</button>
-    </div>
+<div class="card">
+  <div class="pic">
+    <!-- Swap this SVG for <img src="panda.png"> to use your own mascot -->
+    <svg viewBox="0 0 120 130" xmlns="http://www.w3.org/2000/svg">
+      <ellipse cx="60" cy="118" rx="34" ry="5" fill="#e6dede"/>
+      <circle cx="34" cy="28" r="12" fill="#3a2220"/>
+      <circle cx="86" cy="28" r="12" fill="#3a2220"/>
+      <ellipse cx="60" cy="68" rx="46" ry="42" fill="#fff" stroke="#3a2220" stroke-width="3"/>
+      <circle cx="36" cy="76" r="9" fill="#ffb3b9"/>
+      <circle cx="84" cy="76" r="9" fill="#ffb3b9"/>
+      <ellipse cx="42" cy="64" rx="4" ry="5" fill="#3a2220"/>
+      <ellipse cx="78" cy="64" rx="4" ry="5" fill="#3a2220"/>
+      <path d="M40 72 q-3 8 0 10" stroke="#7ec8ff" stroke-width="3" fill="none" stroke-linecap="round"/>
+      <path d="M54 78 q6 5 12 0" stroke="#3a2220" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+    </svg>
   </div>
-</header>
+  <h1>I'm Sorry! 🥺</h1>
+  <p id="msg">I know I messed up... Can you please forgive me?</p>
+</div>
 
-<section class="hero">
-  <div class="wrap hero-grid">
-    <div>
-      <p class="eyebrow">SIH 2026 · 26229 · Ministry of Mines / JNARDDC</p>
-      <h1>The scrap dealer's price board, made fair, traceable, and offline.</h1>
-      <p class="lede">A vernacular app that lets informal e-waste collectors weigh a lot, see a fair price, and hand it to an authorized recycler with proof — instead of a backyard burn pit.
-        <span class="dv">कबाड़ी अब अपने माल का सही भाव देख सकता है, अधिकृत रीसाइक्लर से जुड़ सकता है, और बिना इंटरनेट के भी काम कर सकता है।</span>
-      </p>
-    </div>
+<div class="btns">
+  <button id="yes">Yes</button>
+  <button id="no">No</button>
+</div>
 
-    <div class="board">
-      <div class="board-mats" id="matPicker">
-        <button class="active" data-mat="pcb" data-rate="185" data-trend="up" data-unit="₹ / kg">PCB / मदरबोर्ड</button>
-        <button data-mat="copper" data-rate="612" data-trend="up" data-unit="₹ / kg">Copper wire</button>
-        <button data-mat="crt" data-rate="4" data-trend="down" data-unit="₹ / kg">CRT glass</button>
-        <button data-mat="battery" data-rate="58" data-trend="down" data-unit="₹ / kg">Li-ion battery</button>
-        <button data-mat="alu" data-rate="142" data-trend="up" data-unit="₹ / kg">Aluminium</button>
-      </div>
-      <div class="board-rate">
-        <span class="num" id="rateNum">185</span>
-        <span class="unit" id="rateUnit">₹ / kg</span>
-      </div>
-      <div class="board-trend" id="rateTrend">▲ 6% vs last week · Nashik zone</div>
-      <div class="spark" id="spark"></div>
-      <div class="board-note">Live price board · updates when the collector's phone reconnects · <span class="dv">भाव इंटरनेट मिलने पर अपडेट होता है</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="wrap">
-  <p class="kicker">The gap this closes</p>
-  <h2>Why the material never reaches a formal recycler today</h2>
-  <div class="chain">
-    <div><div class="label">STEP 1</div><div class="val">Waste-picker collects e-waste — best last-mile reach in the system</div></div>
-    <div><div class="label">STEP 2</div><div class="val">No visibility into fair price or which recyclers are authorized</div></div>
-    <div><div class="label">STEP 3</div><div class="val bad">Cable burnt for copper, PCBs acid-leached in the open</div></div>
-    <div><div class="label">LOST</div><div class="val bad">Lithium, cobalt, neodymium, tantalum, gallium, indium — gone</div></div>
-  </div>
-</section>
-
-<section class="wrap">
-  <p class="kicker">Walkthrough</p>
-  <h2>Four screens, one handover</h2>
-  <p class="sec-sub">Built for an entry-level Android phone, in Hindi and Marathi first, and usable with the data off.</p>
-
-  <div class="tabs" id="tabs">
-    <button class="active" data-tab="t1"><span class="step">1 · Snap &amp; lot</span>photo → weight → estimate</button>
-    <button data-tab="t2"><span class="step">2 · Match</span>price + nearby recyclers</button>
-    <button data-tab="t3"><span class="step">3 · Handover</span>GPS + timestamp proof</button>
-    <button data-tab="t4"><span class="step">4 · Ledger</span>earnings &amp; dues</button>
-  </div>
-
-  <div class="phone-panel active" id="t1">
-    <div class="phone-mock">
-      <div class="app-hd">LOT #KC-10482 · draft</div>
-      <div class="photo-ph">📷 Circuit board — 3 photos</div>
-      <div class="row-line"><span>Category</span><span>PCB — मदरबोर्ड</span></div>
-      <div class="row-line"><span>Weight (entered)</span><span>4.2 kg</span></div>
-      <div class="row-line"><span>Estimated value</span><span>₹ 777</span></div>
-      <div class="row-line"><span>Status</span><span class="badge pending">Saved offline</span></div>
-    </div>
-    <div class="phone-copy">
-      <h3>Create a lot in three taps</h3>
-      <p>Photograph the material, pick a category from icons (no typing needed), enter approximate weight — the app returns an instant value estimate against the current price board.</p>
-      <ul>
-        <li>Works for CRTs, LCD panels, PCBs, cables, batteries, motors, magnet assemblies, mixed plastics</li>
-        <li>Category icons + spoken labels for low-literacy use</li>
-        <li>Estimate refines with an on-device image-classification model as more lots are logged</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="phone-panel" id="t2">
-    <div class="phone-mock">
-      <div class="app-hd">Best matches for LOT #KC-10482</div>
-      <div class="row-line"><span>GreenLoop Recyclers</span><span>₹ 192/kg</span></div>
-      <div class="row-line"><span>Nashik Metal Circular</span><span>₹ 178/kg</span></div>
-      <div class="row-line"><span>Vasai E-Metal Assoc.</span><span>₹ 171/kg</span></div>
-      <div class="row-line"><span>Ranked by</span><span>rate · distance · pickup</span></div>
-    </div>
-    <div class="phone-copy">
-      <h3>Rank recyclers, not just list them</h3>
-      <p>Every registered facility carries its authorization status, accepted materials, offered rate, service area and pickup availability. Lots are matched and ranked against all five.</p>
-      <ul>
-        <li>Only authorized facilities are eligible for formal handover</li>
-        <li>Abnormal or inconsistent offers are flagged before acceptance</li>
-        <li>Collector can still choose price over distance, or vice versa</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="phone-panel" id="t3">
-    <div class="phone-mock">
-      <div class="app-hd">Handover record — HR-88213</div>
-      <div class="row-line"><span>Recycler</span><span>GreenLoop Recyclers</span></div>
-      <div class="row-line"><span>Weight confirmed</span><span>4.1 kg</span></div>
-      <div class="row-line"><span>GPS · time</span><span>19.99°N · 12:41</span></div>
-      <div class="row-line"><span>Recycler confirmation</span><span class="badge">Signed</span></div>
-    </div>
-    <div class="phone-copy">
-      <h3>A slip that actually holds up</h3>
-      <p>Photographs, weight, timestamp and GPS are bundled into one reference the recycler confirms on their side — the traceable link from collector to authorized processing.</p>
-      <ul>
-        <li>Generated offline, synced once connectivity returns</li>
-        <li>Unique reference ID doubles as the collector's proof of sale</li>
-        <li>Feeds the traceability dataset end to end</li>
-      </ul>
-    </div>
-  </div>
-
-  <div class="phone-panel" id="t4">
-    <div class="phone-mock">
-      <div class="app-hd">Earnings — this month</div>
-      <div class="row-line"><span>12 lots handed over</span><span>₹ 6,140</span></div>
-      <div class="row-line"><span>Pending payment</span><span>₹ 420</span></div>
-      <div class="row-line"><span>Cash received</span><span>₹ 5,720</span></div>
-      <div class="row-line"><span>Digital (optional)</span><span>₹ 420</span></div>
-    </div>
-    <div class="phone-copy">
-      <h3>A financial history that didn't exist before</h3>
-      <p>A running ledger of every transaction and payment, in plain numbers. Cash stays the default; digital payment is offered, never required.</p>
-      <ul>
-        <li>First usable transaction history for many collectors</li>
-        <li>Pending dues are visible, not just promised verbally</li>
-        <li>Minimal profile — no unnecessary personal data collected</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<section class="wrap">
-  <p class="kicker">Data model</p>
-  <h2>Five ledgers, kept live — not a static database</h2>
-  <p class="sec-sub">Every screen above writes to, and reads from, these structured datasets.</p>
-  <div class="dsets">
-    <div class="card">
-      <div class="tag">MATERIAL</div>
-      <h3>What was collected</h3>
-      <ul><li>Category, sub-category, description</li><li>Image reference, condition, source type</li><li>Approx. weight, estimated value</li></ul>
-    </div>
-    <div class="card">
-      <div class="tag">PRICE</div>
-      <h3>What it's worth, where, when</h3>
-      <ul><li>Category, location, date/time</li><li>Buying vs. quoted price, unit</li><li>Recycler offer + historical trend</li></ul>
-    </div>
-    <div class="card">
-      <div class="tag">RECYCLER</div>
-      <h3>Who can legally take it</h3>
-      <ul><li>Facility, location, materials accepted</li><li>Authorization status &amp; registration</li><li>Offered rate, pickup, service area</li></ul>
-    </div>
-    <div class="card">
-      <div class="tag">TRANSACTION + TRACE</div>
-      <h3>What happened to it next</h3>
-      <ul><li>Lot ID, collector ID, quoted vs. final price</li><li>Photos, GPS, timestamp, handover ref.</li><li>Recycler confirmation, payment status</li></ul>
-    </div>
-  </div>
-</section>
-
-<section class="wrap">
-  <p class="kicker">Nearby &amp; authorized</p>
-  <h2>Matching a lot to a recycler</h2>
-  <div class="rec">
-    <div class="rec-row">
-      <div><div class="rec-name">GreenLoop Recyclers <span class="stamp">AUTHORIZED</span></div><div class="rec-meta">Nashik MIDC · 6.2 km · accepts PCB, cable, battery · pickup: daily</div></div>
-      <div class="rec-rate">₹ 192 / kg</div>
-    </div>
-    <div class="rec-row">
-      <div><div class="rec-name">Nashik Metal Circular <span class="stamp">AUTHORIZED</span></div><div class="rec-meta">Ambad · 9.8 km · accepts PCB, motor, magnet · pickup: on request</div></div>
-      <div class="rec-rate">₹ 178 / kg</div>
-    </div>
-    <div class="rec-row">
-      <div><div class="rec-name">Vasai E-Metal Assoc. <span class="stamp">AUTHORIZED</span></div><div class="rec-meta">Vasai East · 14.1 km · accepts PCB, LCD, CRT · pickup: Tue &amp; Fri</div></div>
-      <div class="rec-rate">₹ 171 / kg</div>
-    </div>
-  </div>
-</section>
-
-<section class="wrap">
-  <p class="kicker">Illustrative unit economics</p>
-  <h2>Does formal actually pay better?</h2>
-  <p class="sec-sub">Based on early conversations with two Nashik-area scrap collectors — indicative, not audited. Platform side assumes a small facilitation margin charged to the recycler, not the collector.</p>
-  <div class="bars-row">
-    <div class="bar-group">
-      <div class="bar-val">₹ 145</div>
-      <div class="bar" style="height:96px;"></div>
-      <div class="bar-label">Informal route<br>₹/kg, PCB, backyard buyer</div>
-    </div>
-    <div class="bar-group">
-      <div class="bar-val">₹ 185</div>
-      <div class="bar high" style="height:130px;"></div>
-      <div class="bar-label">Kabadiwala Connect<br>₹/kg, authorized recycler</div>
-    </div>
-  </div>
-  <p style="font-size:0.86rem;color:#635f52;margin-top:14px;">Platform sustains itself through a small per-kg fee charged to recyclers for a matched, verified lot — not a cut of the collector's price — plus optional value-added data services for OEMs and regulators built on the anonymised price and traceability datasets.</p>
-</section>
-
-<section class="wrap">
-  <p class="kicker">Safety guidance</p>
-  <h2>Shown, not just written</h2>
-  <div class="safety">
-    <div>
-      <div class="ico">🔥🚫</div>
-      <h4>No open cable burning</h4>
-      <p>Releases toxic fumes and destroys recoverable copper value.<span class="dv">तार जलाना नहीं — जहरीला धुआं और नुकसान</span></p>
-    </div>
-    <div>
-      <div class="ico">🧪🚫</div>
-      <h4>No acid leaching of PCBs</h4>
-      <p>Burns skin and lungs, and loses gold, gallium, tantalum to runoff.<span class="dv">बोर्ड को एसिड में मत डालें</span></p>
-    </div>
-    <div>
-      <div class="ico">🔋⚠️</div>
-      <h4>Handle batteries and CRTs carefully</h4>
-      <p>Puncture or crushing risks fire and lead exposure — hand over sealed.<span class="dv">बैटरी और CRT को सावधानी से रखें</span></p>
-    </div>
-  </div>
-</section>
-
-<footer>
-  <div class="wrap">
-    <div class="cols">
-      <div>
-        <h4>PLATFORM</h4>
-        <p>Android, offline-first, small APK footprint. Core flows — lot creation, price board, handover record — work fully offline and sync in the background.</p>
-        <span class="offline-badge">● offline-tolerant by design</span>
-      </div>
-      <div>
-        <h4>LANGUAGE</h4>
-        <p>Hindi and Marathi at launch, icon-first navigation, spoken price readouts for low-literacy users. English kept for recycler and admin-side interfaces.</p>
-      </div>
-      <div>
-        <h4>VALIDATION PLAN</h4>
-        <p>Field research with at least two working scrap collectors/aggregators, paired with a live usability demo and a recycler-side counterpart interface.</p>
-      </div>
-    </div>
-  </div>
-</footer>
+<div id="done">
+  <div class="big">🥰</div>
+  <h2>Thank you!</h2>
+  <p>I promise I'll do better. Love you!</p>
+</div>
 
 <script>
-  // material price board
-  const matBtns = document.querySelectorAll('#matPicker button');
-  const rateNum = document.getElementById('rateNum');
-  const rateUnit = document.getElementById('rateUnit');
-  const rateTrend = document.getElementById('rateTrend');
-  const spark = document.getElementById('spark');
+  const yesBtn = document.getElementById('yes');
+  const noBtn  = document.getElementById('no');
+  const msg    = document.getElementById('msg');
+  const done   = document.getElementById('done');
 
-  function renderSpark(seedRate, up){
-    spark.innerHTML='';
-    let v = seedRate * 0.8;
-    for(let i=0;i<12;i++){
-      v = v + (Math.random()-0.35)*seedRate*0.06;
-      if(up) v += seedRate*0.01; else v -= seedRate*0.01;
-      const h = Math.max(6, Math.min(38, (v/seedRate)*30));
-      const bar = document.createElement('div');
-      bar.style.height = h+'px';
-      if(!up) bar.style.background = 'var(--rust)';
-      spark.appendChild(bar);
+  const messages = [
+    "😂 The 'Yes' army is growing!",
+    "😐 Pretty sure you meant 'Yes'...",
+    "🚗 You've got so many 'Yes' buttons already!",
+    "🥹 Please? I'll bring chocolates...",
+    "😍 Getting hard to resist it, isn't it?",
+    "🫠 There's nowhere left to click but Yes!"
+  ];
+
+  const MAX_CLONES = 350;   // keeps older Android phones smooth
+  let noClicks = 0, total = 0;
+
+  const forgive = () => done.classList.add('show');
+  yesBtn.addEventListener('click', forgive);
+
+  function spawnYes(count) {
+    const frag = document.createDocumentFragment();
+    count = Math.min(count, MAX_CLONES - total);
+    for (let i = 0; i < count; i++) {
+      const b = document.createElement('button');
+      b.className = 'clone';
+      b.textContent = 'Yes';
+      b.style.left = (Math.random() * 105 - 6) + 'vw';
+      b.style.top  = (Math.random() * 105 - 3) + 'dvh';
+      b.style.animationDelay = (Math.random() * 0.25) + 's';
+      b.addEventListener('click', forgive);
+      frag.appendChild(b);
     }
+    total += count;
+    document.body.appendChild(frag);
   }
 
-  function setMaterial(btn){
-    matBtns.forEach(b=>b.classList.remove('active'));
-    btn.classList.add('active');
-    const rate = btn.dataset.rate;
-    const unit = btn.dataset.unit;
-    const up = btn.dataset.trend === 'up';
-    rateNum.textContent = rate;
-    rateUnit.textContent = unit;
-    rateTrend.textContent = (up ? '▲ ' : '▼ ') + (up ? (3+Math.floor(Math.random()*6)) : (2+Math.floor(Math.random()*5))) + '% vs last week · Nashik zone';
-    rateTrend.classList.toggle('down', !up);
-    renderSpark(parseFloat(rate), up);
-  }
-  matBtns.forEach(b=>b.addEventListener('click', ()=>setMaterial(b)));
-  setMaterial(matBtns[0]);
-
-  // tabs
-  document.querySelectorAll('#tabs button').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      document.querySelectorAll('#tabs button').forEach(x=>x.classList.remove('active'));
-      document.querySelectorAll('.phone-panel').forEach(p=>p.classList.remove('active'));
-      b.classList.add('active');
-      document.getElementById(b.dataset.tab).classList.add('active');
-    });
-  });
-
-  // language toggle (illustrative — swaps hero lede emphasis)
-  document.querySelectorAll('.langtoggle button').forEach(b=>{
-    b.addEventListener('click', ()=>{
-      document.querySelectorAll('.langtoggle button').forEach(x=>x.classList.remove('active'));
-      b.classList.add('active');
-    });
+  noBtn.addEventListener('click', () => {
+    noClicks++;
+    msg.textContent = messages[Math.min(noClicks - 1, messages.length - 1)];
+    noBtn.style.transform =
+      `rotate(${(Math.random()*14-7).toFixed(1)}deg) translate(${Math.random()*8-4}px, ${Math.random()*8-4}px)`;
+    spawnYes(Math.min(2 + noClicks * noClicks * 3, 90));
   });
 </script>
-
 </body>
 </html>
